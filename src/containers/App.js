@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styles from './App.module.css';
-import Person from '../components/PersonList/Person/Person';
+import PersonList from '../components/PersonList/PersonList';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
   state = {
@@ -34,6 +35,7 @@ class App extends Component {
   togglePersonsHandler = () => {
     this.setState({ showPersons: !this.state.showPersons });
   }
+
   render() {
     let persons = null;
     let btnClass = '';
@@ -41,18 +43,12 @@ class App extends Component {
     if (this.state.showPersons) {
       persons = (
         <div>
-          {this.state.persons.map((person, index) => {
-            return <Person
-              name={person.name}
-              age={person.age}
-              click={() => this.deletePersonHandler(index)}
-              key={person.id}
-              changed={(event) => this.nameChangedHandler(event, person.id)} />
-          })}
+          <PersonList persons={this.state.persons}
+            clicked={this.deletePersonHandler}
+            changed={this.nameChangedHandler}
+          />
         </div>
       );
-
-      btnClass = styles.Red;
     }
 
     let classes = [];
@@ -65,11 +61,11 @@ class App extends Component {
 
     return (
       <div className={styles.App}>
-        <p className={classes.join(' ')}>Hey!</p>
-        <button  className={btnClass} onClick={this.togglePersonsHandler}>Switch name</button>
+        <Cockpit showPersons={this.state.showPersons}
+          persons={this.state.persons}
+          clicked={this.togglePersonsHandler} />
         {persons}
       </div>);
-    //return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Hi I\'m a React App'));
   }
 }
 
